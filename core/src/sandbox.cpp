@@ -4,6 +4,7 @@
 
 #include <cstring>
 #include <cerrno>
+#include <cstdint>
 #include <cstdlib>
 #include <vector>
 
@@ -368,7 +369,7 @@ std::string install_seccomp_filter() {
 
     // MPROTECT_CHECK: load arg2 (prot) — seccomp_data.args[2]
     filter[i++] = BPF_STMT_SC(BPF_LD | BPF_W | BPF_ABS,
-                               offsetof(struct seccomp_data, args) + 2 * sizeof(uint64_t));
+                               offsetof(struct seccomp_data, args) + 2 * sizeof(std::uint64_t));
 
     // Check PROT_EXEC (0x4) bit — if set → KILL, else → ALLOW
     filter[i++] = BPF_JUMP_SC(BPF_JMP | BPF_JSET | BPF_K, 0x4, 1, 0);
