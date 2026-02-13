@@ -84,9 +84,14 @@ cd build && ctest --output-on-failure && cd ..
 ### 4) Telegram 실행(선택)
 
 ```bash
-cp .secrets.env.example .secrets.env
-# TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, (선택) LLM 키 설정
-python3 telegram_bot.py
+mkdir -p ~/.config/machina
+cp .secrets.env.example ~/.config/machina/.secrets.env
+chmod 600 ~/.config/machina/.secrets.env
+
+# 값 입력 후 사전 점검 + 런처 실행
+./scripts/doctor.sh
+nohup ./scripts/run_bot_forever.sh >/tmp/machina_bot.launcher.out 2>&1 &
+tail -f /tmp/machina_bot.log
 ```
 
 ## 현재 언어 상태와 계획

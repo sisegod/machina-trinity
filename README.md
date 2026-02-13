@@ -285,6 +285,19 @@ EOF
 ./build/machina_cli run /tmp/machina_blended.json
 ```
 
+### Run Telegram Bot (optional, production-style launcher)
+
+```bash
+mkdir -p ~/.config/machina
+cp .secrets.env.example ~/.config/machina/.secrets.env
+chmod 600 ~/.config/machina/.secrets.env
+
+# Fill TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID first
+./scripts/doctor.sh
+nohup ./scripts/run_bot_forever.sh >/tmp/machina_bot.launcher.out 2>&1 &
+tail -f /tmp/machina_bot.log
+```
+
 ### Deploy to Production
 
 ```bash

@@ -61,11 +61,11 @@ ANTHROPIC_MODEL="claude-sonnet-4-5-20250929"
 MACHINA_CHAT_BACKEND="anthropic"
 ```
 
-## Step 3: Start the bot (1 min)
+## Step 3: Validate environment and start the bot (1 min)
 
 ```bash
-source ~/.config/machina/.secrets.env
-nohup python3 telegram_bot.py > /tmp/machina_bot.log 2>&1 &
+./scripts/doctor.sh
+nohup ./scripts/run_bot_forever.sh >/tmp/machina_bot.launcher.out 2>&1 &
 ```
 
 Check startup logs:
@@ -133,6 +133,6 @@ python3 machina_reindex.py --stats
 | Problem | Fix |
 |---------|-----|
 | terminated by other getUpdates | `pkill -f telegram_bot.py` then restart |
-| Bot not responding | inspect `/tmp/machina_bot.log` |
+| Bot not responding | run `./scripts/doctor.sh` then inspect `/tmp/machina_bot.log` |
 | MCP tools not loading | verify `mcp_servers.json` and dependencies |
 | Ollama timeout | make sure `ollama serve` is running |
