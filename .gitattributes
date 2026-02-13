@@ -2,11 +2,8 @@
 # Goal: highlight the C++ transactional core as the primary implementation language.
 # This does not affect build/test/runtime behavior.
 
-# Non-core Python orchestration and automation layers
+# Non-core Python automation layer
 machina_autonomic/** linguist-vendored
-machina_*.py linguist-vendored
-telegram_*.py linguist-vendored
-policies/*.py linguist-vendored
 
 # Tooling / examples / test harness (documentation-support paths)
 scripts/** linguist-vendored
