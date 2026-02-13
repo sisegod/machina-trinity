@@ -281,8 +281,8 @@ python3 scripts/validate_docs_refs.py
 scripts/run_guardrails.sh
 ```
 
-- `validate_aid_refs.py`: Python/policies code 내 AID 문자열이 canonical set(Manifest + registry constants)과 일치하는지 검사
-- `validate_docs_refs.py`: `README.md`, `docs/*.md`의 AID 표기가 실제 도구 정의와 일치하는지 검사
+- `validate_aid_refs.py`: verifies that AID strings in Python/policies code match the canonical set (manifests + registry constants)
+- `validate_docs_refs.py`: verifies that AID references in `README.md` and `docs/*.md` match actual tool definitions
 
 ### Secret hygiene validation
 
@@ -290,8 +290,8 @@ scripts/run_guardrails.sh
 python3 scripts/security_guardrails.py
 ```
 
-- `mcp_servers.json`에서 평문 Bearer/API 키를 차단
-- 허용 형식: `${ENV_VAR}` 플레이스홀더 사용
+- Blocks plaintext Bearer/API keys in `mcp_servers.json`
+- Allowed format: `${ENV_VAR}` placeholders
 
 ### work/memory rotation (safe by default)
 
@@ -303,8 +303,8 @@ python3 scripts/work_memory_maintenance.py
 python3 scripts/work_memory_maintenance.py --apply --keep-lines 5000 --min-size-mb 32
 ```
 
-- 기본 모드: dry-run
-- 적용 시: `work/memory/archive/YYYYMMDD/`에 원본 백업 후 tail 유지
+- Default mode: dry-run
+- Apply mode: archive originals to `work/memory/archive/YYYYMMDD/` and keep only tail lines
 
 ### Process restart orchestration (machine-wide cleanup + single-stack start)
 
@@ -319,10 +319,10 @@ scripts/ops_restart.sh
 scripts/ops_restart.sh --dry-run
 ```
 
-- `ops_detect.sh`: 현재 Machina/Telegram/MCP 관련 프로세스 스냅샷 생성 (`ops/pids.current.json`)
-- `ops_kill.sh`: 단계적 종료(SIGTERM 후 대기, 잔존 시 SIGKILL)
-- `ops_start.sh`: 표준 단일 스택 기동 (`machina_cli serve` + `telegram_bot.py`)
-- `ops_healthcheck.sh`: `/health` + bot/serve PID 기반 상태 확인 (`ops/health.report.json`)
+- `ops_detect.sh`: captures a snapshot of active Machina/Telegram/MCP-related processes (`ops/pids.current.json`)
+- `ops_kill.sh`: staged shutdown (SIGTERM, wait, then SIGKILL for stragglers)
+- `ops_start.sh`: starts the standard single-stack runtime (`machina_cli serve` + `telegram_bot.py`)
+- `ops_healthcheck.sh`: validates `/health` plus bot/serve PID status (`ops/health.report.json`)
 - **Atomic FILE.WRITE** (v6.5): tmp→fsync→rename+.bak pattern prevents data loss on crash
 
 ---

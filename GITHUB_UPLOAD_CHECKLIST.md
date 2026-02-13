@@ -1,20 +1,24 @@
 # GitHub Upload Checklist
 
-## 1) 클린 패키지 재생성
+## 1) Rebuild clean package
+
 ```bash
 scripts/export_github_ready.sh
 ```
 
-## 2) 업로드할 폴더
+## 2) Folder to upload
+
 - `github_ready/`
 
-## 3) 제외된 항목
+## 3) Items excluded from public upload
+
 - `build/`, `logs/`, `work/`, `__pycache__/`
 - `machina_env.sh`, `.env*`, `.secrets.env`
-- `ops/` 런타임 보고 파일
-- 내부 기록성 문서와 중복 README
+- `ops/` runtime report artifacts
+- Internal session/audit notes and duplicate README files
 
-## 4) 업로드 전 검증
+## 4) Pre-upload validation
+
 ```bash
 scripts/run_guardrails.sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release

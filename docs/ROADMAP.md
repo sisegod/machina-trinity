@@ -57,7 +57,7 @@ This repo intentionally separates **rails** (core safety + tooling) from **intel
 - **LLM-free Fast Path** (v6.5): keyword hash-based intent routing skips LLM for common ops (shell/file/search/memory)
 - **Policy Distillation** (v6.5): `distill_rules()` + `lookup_distilled()` — experience→rule cache (10min TTL, ≥0.8 confidence gate)
 - **Safe Mutation Contract** (v6.5): FILE.WRITE atomic write (tmp→fsync→rename+.bak)
-- **Golden Replay Test** (v6.5): 공개 패키지에서는 `scripts/replay_strict_latest.sh` 기반으로 동일 목적(구조 검증)을 수행
+- **Golden Replay Test** (v6.5): in the public package, use `scripts/replay_strict_latest.sh` for the same structural validation goal
 - **Quickstart Demo** (v6.5): `examples/quickstart_demo.py` — 4-step automated onboarding
 - 34/34 E2E tests passing (Qwen3 14B Q8)
 
