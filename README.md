@@ -238,6 +238,8 @@ The result: the system is *monotonically improving*. It either gets better or st
 git clone https://github.com/sisegod/machina-trinity.git
 cd machina-trinity
 
+pip install -r requirements.txt
+
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(nproc)          # Linux
 # cmake --build build -j$(sysctl -n hw.ncpu)  # macOS

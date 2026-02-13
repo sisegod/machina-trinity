@@ -32,6 +32,7 @@ Typical run time is about 2 minutes.
 ```bash
 git clone <repo-url> machina_trinity_legend
 cd machina_trinity_legend
+pip install -r requirements.txt
 ./scripts/build_fast.sh
 cd build && ctest --output-on-failure
 ```

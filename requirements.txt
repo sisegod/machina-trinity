@@ -1,0 +1,6 @@
+# Core runtime dependency (Telegram bot runtime)
+python-telegram-bot>=20.8,<22
+
+# Optional but recommended for richer web/search behavior
+ddgs>=9.5.5,<10
+beautifulsoup4>=4.12.3,<5

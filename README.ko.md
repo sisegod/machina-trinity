@@ -65,6 +65,8 @@ Machina는 이를 다음 방식으로 줄입니다.
 sudo apt-get update
 sudo apt-get install -y build-essential cmake pkg-config libjson-c-dev
 
+pip install -r requirements.txt
+
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(nproc)
 ```
