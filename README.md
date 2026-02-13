@@ -68,6 +68,17 @@ Machina documentation now uses locale-oriented naming based on modern BCP-47 sty
 | Korean (`ko-KR`) | `README.ko.md` | Maintained |
 | Japanese (`ja-JP`) | `README.ja.md` | Maintained |
 | Simplified Chinese (`zh-Hans-CN`) | `README.zh-CN.md` | Maintained |
+| Traditional Chinese (`zh-Hant-TW`) | `README.zh-TW.md` | Maintained |
+| Spanish (`es`) | `README.es.md` | Maintained |
+| Portuguese Brazil (`pt-BR`) | `README.pt-BR.md` | Maintained |
+| French (`fr-FR`) | `README.fr.md` | Maintained |
+| German (`de-DE`) | `README.de.md` | Maintained |
+| Vietnamese (`vi-VN`) | `README.vi.md` | Maintained |
+| Indonesian (`id-ID`) | `README.id.md` | Maintained |
+| Thai (`th-TH`) | `README.th.md` | Maintained |
+| Russian (`ru-RU`) | `README.ru.md` | Maintained |
+| Arabic (`ar-SA`) | `README.ar.md` | Maintained |
+| Hindi (`hi-IN`) | `README.hi.md` | Maintained |
 
 Language strategy and expansion roadmap:
 - `docs/LANGUAGE_STRATEGY_EN.md`

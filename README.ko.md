@@ -16,6 +16,17 @@
 - 한국어: `README.ko.md`
 - 일본어: `README.ja.md`
 - 중국어(간체): `README.zh-CN.md`
+- 중국어(번체): `README.zh-TW.md`
+- 스페인어: `README.es.md`
+- 포르투갈어(BR): `README.pt-BR.md`
+- 프랑스어: `README.fr.md`
+- 독일어: `README.de.md`
+- 베트남어: `README.vi.md`
+- 인도네시아어: `README.id.md`
+- 태국어: `README.th.md`
+- 러시아어: `README.ru.md`
+- 아랍어: `README.ar.md`
+- 힌디어: `README.hi.md`
 - 언어 전략: `docs/LANGUAGE_STRATEGY_EN.md`
 - 전체 등가 문서 세트: `docs/i18n/README.md`
 
