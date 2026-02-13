@@ -13,6 +13,7 @@
 - 日本語: `README.ja.md`
 - 简体中文: `README.zh-CN.md`
 - 语言策略: `docs/LANGUAGE_STRATEGY_EN.md`
+- 全量等价文档集: `docs/i18n/README.md`
 
 ## 项目简介
 

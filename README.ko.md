@@ -17,6 +17,7 @@
 - 일본어: `README.ja.md`
 - 중국어(간체): `README.zh-CN.md`
 - 언어 전략: `docs/LANGUAGE_STRATEGY_EN.md`
+- 전체 등가 문서 세트: `docs/i18n/README.md`
 
 ## 프로젝트 개요
 

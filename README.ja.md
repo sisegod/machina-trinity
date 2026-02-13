@@ -13,6 +13,7 @@
 - 日本語: `README.ja.md`
 - 简体中文: `README.zh-CN.md`
 - Language strategy: `docs/LANGUAGE_STRATEGY_EN.md`
+- Full equivalent docsets: `docs/i18n/README.md`
 
 ## 概要
 

@@ -72,6 +72,7 @@ Machina documentation now uses locale-oriented naming based on modern BCP-47 sty
 Language strategy and expansion roadmap:
 - `docs/LANGUAGE_STRATEGY_EN.md`
 - `docs/ROADMAP.md`
+- Full equivalent docsets: `docs/i18n/README.md`
 
 ---
 

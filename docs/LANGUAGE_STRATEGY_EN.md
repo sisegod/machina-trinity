@@ -96,3 +96,7 @@ Document file naming keeps GitHub-friendly conventions:
   - `README.ja.md`
   - `README.zh-CN.md`
 - Updated roadmap to explicitly state Korean-first Telegram status and multilingual expansion plan
+- Added multilingual equivalent docsets (full English scope coverage):
+  - `docs/i18n/ko/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/ja/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/zh-CN/EQUIVALENT_DOCSET.md`
