@@ -1,0 +1,17 @@
+# GitHub Linguist tuning (language stats only)
+# Goal: highlight the C++ transactional core as the primary implementation language.
+# This does not affect build/test/runtime behavior.
+
+# Non-core Python orchestration and automation layers
+machina_autonomic/** linguist-vendored
+machina_*.py linguist-vendored
+telegram_*.py linguist-vendored
+policies/*.py linguist-vendored
+
+# Tooling / examples / test harness (documentation-support paths)
+scripts/** linguist-vendored
+examples/** linguist-vendored
+tests/**/*.py linguist-vendored
+
+# Optional hard mode (disabled): remove all Python from language stats
+# *.py linguist-detectable=false
