@@ -86,3 +86,9 @@ This repo intentionally separates **rails** (core safety + tooling) from **intel
 4) **Portability**
    - Windows parity for daemon + sandbox
    - plugin ABI stability
+
+5) **Language Expansion (Telegram + Docs)**
+   - Current state: Telegram/Pulse runtime is Korean-first (`ko-KR`) for prompts and intent phrasing
+   - Near-term: strengthen English (`en`) default docs + operator UX
+   - Planned rollout: `ja-JP`, `zh-Hans-CN`, `zh-Hant-TW`, then broader locales (`es`, `pt-BR`, `fr`, `de`, `vi`, `id`, `th`, `ru`, `ar`, `hi`)
+   - Implementation principle: single runtime codebase, locale resource packs, no long-lived language forks

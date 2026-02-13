@@ -41,6 +41,7 @@
   - [Deterministic Replay](#4-deterministic-replay)
   - [Monotonic Self-Improvement](#5-the-system-keeps-getting-better)
 - [Quick Start](#quick-start)
+- [Language Versions](#language-versions)
 - [Runtime Modes](#runtime-modes)
 - [Control Modes](#control-modes)
 - [Built-in Tools (40+)](#built-in-tools-40)
@@ -54,6 +55,23 @@
 - [Contributing](#contributing)
 
 </details>
+
+---
+
+## Language Versions
+
+Machina documentation now uses locale-oriented naming based on modern BCP-47 style.
+
+| Locale | File | Status |
+|--------|------|--------|
+| English (`en`) | `README.md` | Source of truth |
+| Korean (`ko-KR`) | `README.ko.md` | Maintained |
+| Japanese (`ja-JP`) | `README.ja.md` | Maintained |
+| Simplified Chinese (`zh-Hans-CN`) | `README.zh-CN.md` | Maintained |
+
+Language strategy and expansion roadmap:
+- `docs/LANGUAGE_STRATEGY_EN.md`
+- `docs/ROADMAP.md`
 
 ---
 
@@ -541,6 +559,7 @@ machina-trinity/
 | **[Policy Driver](docs/POLICY_DRIVER.md)** | LLM integration protocol, driver authoring guide |
 | **[LLM Backends](docs/LLM_BACKENDS.md)** | Ollama, llama.cpp, Claude, OpenAI setup |
 | **[Quick Start](docs/QUICKSTART.md)** | 10-minute build → configure → run guide |
+| **[Language Strategy](docs/LANGUAGE_STRATEGY_EN.md)** | Locale policy, Telegram language status, multilingual rollout plan |
 
 ---
 

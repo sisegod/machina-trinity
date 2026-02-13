@@ -2,7 +2,7 @@
 
 # Machina Trinity
 
-**Safety-Gated Autonomous Agent Runtime (C++ Core + Python Agent Layer)**
+**안전 게이트 기반 자율 에이전트 런타임 (C++ 코어 + Python 에이전트 레이어)**
 
 [![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg)](https://isocpp.org/std/the-standard)
 [![CMake](https://img.shields.io/badge/build-CMake%203.21+-064F8C.svg)](https://cmake.org)
@@ -10,49 +10,45 @@
 
 </div>
 
-Machina Trinity는 "LLM이 도구를 자율 실행하더라도" 안전성과 추적 가능성을 유지하도록 설계된 에이전트 런타임입니다.
+## 언어 문서
 
-핵심은 다음 3가지입니다.
+- 영어: `README.md`
+- 한국어: `README.ko.md`
+- 일본어: `README.ja.md`
+- 중국어(간체): `README.zh-CN.md`
+- 언어 전략: `docs/LANGUAGE_STRATEGY_EN.md`
 
-1. **C++ 안전 코어**: Tx/Rollback, 감사 로그, 샌드박스, WAL
-2. **Python 오케스트레이션**: Telegram/Pulse 루프, Dispatch, Memory, MCP 브리지
-3. **운영 가드레일**: 권한 정책, replay, 테스트/검증 스크립트
+## 프로젝트 개요
 
-## Why This Project
+Machina Trinity는 LLM이 실수할 것을 전제로 설계된 에이전트 런타임입니다.
+목표는 자율성보다 먼저 안전성, 추적성, 복구성을 확보하는 것입니다.
 
-일반적인 에이전트 스택은 편하지만, 실패/오작동/재현성에서 취약한 경우가 많습니다.
-Machina는 아래 문제를 우선 해결합니다.
+핵심 축은 3가지입니다.
 
-| 문제 | Machina 접근 |
-|---|---|
-| 잘못된 도구 선택 | 트랜잭션 실행 + 실패 시 롤백 |
-| 원인 추적 어려움 | 해시 체인 기반 JSONL 감사 로그 |
-| 위험한 명령 실행 | 권한 게이트 + 샌드박스 + 제한 정책 |
-| 재현 어려움 | `replay`, `replay_strict` |
-| 운영 중 장애 대응 | queue/WAL/checkpoint + worker 모델 |
+1. C++ 안전 코어: 트랜잭션 실행, 롤백, 감사 로그, WAL
+2. Python 오케스트레이션: Telegram/Pulse 루프, dispatch, memory, MCP 브리지
+3. 운영 가드레일: 권한 정책, 재현(replay), 검증 스크립트
 
-## Architecture
+## 왜 Machina인가
 
-```text
-User/Trigger
-  -> telegram_bot.py / machina_cli
-     -> policies/chat_driver.py (intent)
-        -> machina_dispatch.py
-           -> machina_dispatch_exec.py
-              -> Python tools / MCP / C++ toolhost
-                 -> core Tx + log + state
-```
+일반적인 에이전트 스택은 편리하지만 다음 문제가 자주 발생합니다.
 
-### Runtime Entry Points
-- `./build/machina_cli run <request.json>`: 단일 목표 실행
-- `./build/machina_cli serve --workers N`: HTTP enqueue + 내장 worker
-- `./build/machina_cli chat`: 인터랙티브 채팅 모드
-- `python3 telegram_bot.py`: Telegram 기반 에이전트 실행
-- `python3 machina_reindex.py --verify`: 메모리 스트림 정합성 점검
+- 잘못된 도구 실행 후 상태 오염
+- 실패 원인 추적 어려움
+- 위험 명령/경로 처리 취약
+- 운영 환경에서의 재현 불가
 
-## Quick Start
+Machina는 이를 다음 방식으로 줄입니다.
 
-### 1) Build
+- 도구 실행을 트랜잭션으로 감싸고 실패 시 롤백
+- JSONL + 해시 체인 기반 감사 로그 유지
+- 권한 게이트/샌드박스/정책 제한 적용
+- `replay`, `replay_strict`로 실행 경로 재현
+
+## 빠른 시작
+
+### 1) 빌드
+
 ```bash
 sudo apt-get update
 sudo apt-get install -y build-essential cmake pkg-config libjson-c-dev
@@ -61,88 +57,56 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(nproc)
 ```
 
-### 2) Verify
+### 2) 테스트
+
 ```bash
 cd build && ctest --output-on-failure && cd ..
 ```
 
-### 3) First Run
+### 3) 첫 실행
+
 ```bash
 ./build/machina_cli run examples/run_request.error_scan.json
 ```
 
-### 4) Optional: Telegram Agent
+### 4) Telegram 실행(선택)
+
 ```bash
 cp .secrets.env.example .secrets.env
 # TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, (선택) LLM 키 설정
 python3 telegram_bot.py
 ```
 
-## Security Model (Summary)
+## 현재 언어 상태와 계획
 
-- Permission mode: `open | standard | locked | supervised`
-- ASK/ALLOW/DENY 승인 플로우
+현재 Telegram/Pulse 경로는 한국어 프롬프트/키워드 맵을 중심으로 튜닝되어 있습니다.
+
+- 현재: 한국어 우선(`ko-KR`) 운용
+- 진행 중: 영어(`en`) 일반 사용자 흐름 고도화
+- 예정: 일본어(`ja-JP`), 중국어(`zh-Hans-CN`/`zh-Hant-TW`) 포함 다국어 확장
+
+상세 계획은 `docs/ROADMAP.md`와 `docs/LANGUAGE_STRATEGY_EN.md`를 참고하세요.
+
+## 보안 요약
+
+- 권한 모드: `open | standard | locked | supervised`
+- ASK/ALLOW/DENY 승인 흐름
 - 경로/명령/네트워크 가드
 - 선택적 `bwrap`, seccomp, plugin hash pinning
-- 운영 모드 `MACHINA_PROFILE=prod` 권장
+- 운영 환경에서는 `MACHINA_PROFILE=prod` 권장
 
-상세 운영 보안은 `docs/OPERATIONS.md`를 참고하세요.
+## 문서 맵
 
-## Repository Layout
-
-```text
-core/                 C++ 코어 엔진
-runner/               machina_cli 실행 모드 구현
-toolhost/             도구 호스트 바이너리
-tools/tier0/          내장 도구 구현
-machina_autonomic/    자율 루프 엔진
-policies/             정책/LLM 드라이버
-scripts/              빌드/운영/검증 스크립트
-docs/                 운영/아키텍처 문서
-examples/             실행 예제 요청 JSON
-schemas/              manifest/log JSON schema
-tests/                C++/Python 테스트
-```
-
-## Documentation Map
-
-- 시작: `docs/QUICKSTART.md`
-- 구조: `docs/ARCHITECTURE.md`
+- 빠른 시작: `docs/QUICKSTART.md`
+- 아키텍처: `docs/ARCHITECTURE.md`
 - 운영/보안: `docs/OPERATIONS.md`
 - 서버 API: `docs/SERVE_API.md`
-- LLM 백엔드 연결: `docs/LLM_BACKENDS.md`
+- LLM 백엔드: `docs/LLM_BACKENDS.md`
 - 정책 드라이버: `docs/POLICY_DRIVER.md`
-- IPC 계약: `docs/ipc_schema.md`
-- 향후 계획: `docs/ROADMAP.md`
-- 임베딩 실전 가이드: `MACHINA_LLM_SETUP_GUIDE.md`
+- 로드맵: `docs/ROADMAP.md`
+- 임베딩/LLM 세팅: `MACHINA_LLM_SETUP_GUIDE.md`
 - 테스트 카탈로그: `MACHINA_TEST_CATALOG.md`
 
-## Testing
-
-빠른 가드레일 검사:
-
-```bash
-scripts/run_guardrails.sh
-```
-
-핵심 점검 스크립트:
-
-```bash
-python3 scripts/validate_aid_refs.py
-python3 scripts/validate_docs_refs.py
-python3 scripts/security_guardrails.py
-```
-
-## GitHub Upload Guidance
-
-GitHub 공개 업로드 시에는 아래 산출물은 제외하세요.
-
-- `build/`, `logs/`, `work/`, `__pycache__/`
-- `.env*`, `.secrets.env`, `machina_env.sh`
-- 내부 운영 기록성 문서(날짜 스냅샷 리포트)
-
-상세 기준은 `GITHUB_UPLOAD_CHECKLIST.md`를 참고하세요.
-
-## License
+## 라이선스
 
 Apache-2.0 (`LICENSE`)
