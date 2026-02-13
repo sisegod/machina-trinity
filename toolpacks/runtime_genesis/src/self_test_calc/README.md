@@ -1,0 +1,1 @@
+# Self-Test Calculator\n\nMachina self-created project.\nTests: factorial, primes, fibonacci, math constants.\nBuilt and verified autonomously.\n

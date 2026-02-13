@@ -1,0 +1,45 @@
+{
+  "goalpack_id": "goalpack.error_scan",
+  "goalpack_version": "1.0.0",
+  "trust_tier": "goal_tier0_builtin",
+  "goals": [
+    {
+      "goal_id": "goal.ERROR_SCAN.v1",
+      "dsl_schema": {
+        "type": "object",
+        "required": [
+          "input_path",
+          "pattern"
+        ],
+        "properties": {
+          "input_path": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string",
+            "minLength": 1
+          },
+          "max_rows": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1000000
+          }
+        },
+        "additionalProperties": false
+      },
+      "candidate_tags": [
+        "tag.log",
+        "tag.scan",
+        "tag.error",
+        "tag.report"
+      ],
+      "default_budget_profile": "budget.profileA.default",
+      "required_tools": [
+        "AID.ERROR_SCAN.v1",
+        "AID.REPORT_SUMMARY.v1",
+        "AID.ASK_SUP.v1"
+      ],
+      "completion_slots": [0]
+    }
+  ]
+}

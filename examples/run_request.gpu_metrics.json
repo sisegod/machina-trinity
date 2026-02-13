@@ -1,0 +1,9 @@
+{
+  "goal_id": "goal.GPU_METRICS.v1",
+  "candidate_tags": [
+    "tag.gpu",
+    "tag.meta"
+  ],
+  "control_mode": "FALLBACK_ONLY",
+  "inputs": {}
+}

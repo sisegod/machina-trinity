@@ -1,0 +1,6 @@
+{
+  "goal_id": "goal.DEMO.MISSING_TOOL.v1",
+  "inputs": {},
+  "candidate_tags": ["tag.demo","tag.meta"],
+  "control_mode": "POLICY_ONLY"
+}

@@ -1,0 +1,14 @@
+{
+  "goal_id": "goal.ERROR_SCAN.v1",
+  "inputs": {
+    "input_path": "../examples/test.csv",
+    "pattern": "ERROR",
+    "max_rows": 1000000
+  },
+  "candidate_tags": [
+    "tag.log",
+    "tag.error",
+    "tag.report"
+  ],
+  "control_mode": "FALLBACK_ONLY"
+}

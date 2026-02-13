@@ -1,0 +1,1368 @@
+{
+  "toolpack_id": "toolpack.tier0_builtin",
+  "toolpack_version": "1.0.0",
+  "trust_tier": "tier0_builtin",
+  "tools": [
+    {
+      "aid": "AID.ERROR_SCAN.v1",
+      "name": "error_scan_csv",
+      "deterministic": true,
+      "side_effects": [
+        "filesystem_read"
+      ],
+      "replay_inputs": [
+        "input_path_fingerprint"
+      ],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "O(n) scan, upper bound proportional to file size."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "input_path",
+          "pattern",
+          "max_rows"
+        ],
+        "properties": {
+          "input_path": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "max_rows": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "matches",
+          "sample_rows"
+        ],
+        "properties": {
+          "matches": {
+            "type": "integer"
+          },
+          "sample_rows": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "tags": [
+        "tag.log",
+        "tag.scan",
+        "tag.error"
+      ]
+    },
+    {
+      "aid": "AID.FILE.READ.v1",
+      "name": "file_read",
+      "deterministic": true,
+      "side_effects": [
+        "filesystem_read"
+      ],
+      "replay_inputs": [
+        "path_fingerprint"
+      ],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Reads up to max_bytes from an allowed path; stores base64 in DS0."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "max_bytes": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "path": {
+            "type": "string"
+          },
+          "resolved": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer"
+          },
+          "content_b64": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.fs",
+        "tag.meta"
+      ]
+    },
+    {
+      "aid": "AID.FILE.WRITE.v1",
+      "name": "file_write",
+      "deterministic": false,
+      "side_effects": [
+        "filesystem_write"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Writes text content under a restricted write-root (default: <repo_root>/work)."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "path",
+          "content"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "overwrite": {
+            "type": "boolean"
+          },
+          "mkdirs": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "path": {
+            "type": "string"
+          },
+          "written": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.fs",
+        "tag.meta"
+      ]
+    },
+    {
+      "aid": "AID.SHELL.EXEC.v1",
+      "name": "shell_exec",
+      "deterministic": false,
+      "side_effects": [
+        "process_spawn"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Runs an allowlisted executable with timeout/rlimits and captures output into DS0."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "cmd"
+        ],
+        "properties": {
+          "cmd": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cwd": {
+            "type": "string"
+          },
+          "timeout_ms": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "properties": {
+          "exit_code": {
+            "type": "integer"
+          },
+          "timed_out": {
+            "type": "boolean"
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "output": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.shell",
+        "tag.meta"
+      ]
+    },
+    {
+      "aid": "AID.NET.HTTP_GET.v1",
+      "name": "http_get",
+      "deterministic": false,
+      "side_effects": [
+        "process_spawn",
+        "network_io"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Fetches a URL using curl (if available) with timeout/output cap; stores body in DS0."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "timeout_ms": {
+            "type": "integer"
+          },
+          "max_bytes": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "properties": {
+          "exit_code": {
+            "type": "integer"
+          },
+          "timed_out": {
+            "type": "boolean"
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "url": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.net",
+        "tag.meta"
+      ]
+    },
+    {
+      "aid": "AID.ASK_SUP.v1",
+      "name": "ask_user_for_clarification",
+      "deterministic": true,
+      "side_effects": [
+        "none"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "InfinityBound",
+        "notes": "MVP stores the question as DS1; no external side effects in this build."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "properties": {
+          "answer": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "tags": [
+        "tag.meta"
+      ]
+    },
+    {
+      "aid": "AID.GPU_SMOKE.v1",
+      "name": "gpu_smoke",
+      "deterministic": true,
+      "side_effects": [
+        "gpu_probe"
+      ],
+      "replay_inputs": [
+        "gpu_signature"
+      ],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Probes GPU backend availability (no side effects)."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "backend",
+          "available",
+          "device_count",
+          "device_index"
+        ],
+        "properties": {
+          "backend": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "device_count": {
+            "type": "integer"
+          },
+          "device_index": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "tags": [
+        "tag.meta",
+        "tag.gpu"
+      ]
+    },
+    {
+      "aid": "AID.GPU_METRICS.v1",
+      "name": "gpu_metrics",
+      "deterministic": true,
+      "side_effects": [
+        "gpu_probe"
+      ],
+      "replay_inputs": [
+        "gpu_signature"
+      ],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Reads GPU metrics via NVML (best-effort)."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "backend",
+          "available",
+          "device_count",
+          "device_index"
+        ],
+        "properties": {
+          "backend": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "device_count": {
+            "type": "integer"
+          },
+          "device_index": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "memory_total_mb": {
+            "type": "number"
+          },
+          "memory_used_mb": {
+            "type": "number"
+          },
+          "memory_free_mb": {
+            "type": "number"
+          },
+          "temp_c": {
+            "type": "number"
+          },
+          "power_w": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.meta",
+        "tag.gpu"
+      ]
+    },
+    {
+      "aid": "AID.PROC.SELF_METRICS.v1",
+      "name": "proc_self_metrics",
+      "deterministic": false,
+      "side_effects": [
+        "process_introspection"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Reads /proc/self/* to report RSS/open fds/thread count."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "ok",
+          "pid",
+          "rss_kb",
+          "vmsize_kb",
+          "threads",
+          "open_fds"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "pid": {
+            "type": "integer"
+          },
+          "rss_kb": {
+            "type": "integer"
+          },
+          "vmsize_kb": {
+            "type": "integer"
+          },
+          "threads": {
+            "type": "integer"
+          },
+          "open_fds": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "tags": [
+        "tag.meta",
+        "tag.debug",
+        "tag.ops"
+      ]
+    },
+    {
+      "aid": "AID.REPORT_SUMMARY.v1",
+      "name": "report_summary",
+      "deterministic": true,
+      "side_effects": [
+        "none"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Summarizes prior scan artifact (DS0) into a compact report (DS2)."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "title",
+          "matches",
+          "text"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "matches": {
+            "type": "integer"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "tags": [
+        "tag.report",
+        "tag.error"
+      ]
+    },
+    {
+      "aid": "AID.MEMORY.APPEND.v1",
+      "name": "memory_append",
+      "deterministic": false,
+      "side_effects": [
+        "filesystem_write"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Appends an event/text line into work/memory/<stream>.jsonl (with optional rotation)."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "stream"
+        ],
+        "properties": {
+          "stream": {
+            "type": "string"
+          },
+          "event": {
+            "type": "object"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "ok",
+          "stream",
+          "file",
+          "ts_ms"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "stream": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "ts_ms": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "tags": [
+        "tag.memory",
+        "tag.fs",
+        "tag.meta"
+      ]
+    },
+    {
+      "aid": "AID.MEMORY.SEARCH.v1",
+      "name": "memory_search",
+      "deterministic": false,
+      "side_effects": [
+        "filesystem_read"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Searches the tail of work/memory/<stream>.jsonl for substring matches."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "stream"
+        ],
+        "properties": {
+          "stream": {
+            "type": "string"
+          },
+          "contains": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "max_bytes": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "ok",
+          "stream",
+          "matches",
+          "count"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "stream": {
+            "type": "string"
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "count": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "tags": [
+        "tag.memory",
+        "tag.fs",
+        "tag.meta"
+      ]
+    },
+    {
+      "aid": "AID.MEMORY.QUERY.v1",
+      "name": "memory_query",
+      "deterministic": false,
+      "side_effects": [
+        "filesystem_read"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Searches recent work/memory/<stream>.jsonl (+rotated) using BM25/hash-embedding hybrid scoring."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "stream",
+          "query"
+        ],
+        "properties": {
+          "stream": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "hybrid",
+              "bm25",
+              "embed",
+              "vecdb",
+              "auto"
+            ]
+          },
+          "top_k": {
+            "type": "integer"
+          },
+          "max_entries": {
+            "type": "integer"
+          },
+          "max_bytes": {
+            "type": "integer"
+          },
+          "max_files": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "ok",
+          "stream",
+          "mode",
+          "count",
+          "matches"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "stream": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "score",
+                "score_bm25",
+                "score_embed",
+                "file",
+                "line"
+              ],
+              "properties": {
+                "score": {
+                  "type": "number"
+                },
+                "score_bm25": {
+                  "type": "number"
+                },
+                "score_embed": {
+                  "type": "number"
+                },
+                "file": {
+                  "type": "string"
+                },
+                "line": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "tags": [
+        "tag.memory",
+        "tag.fs",
+        "tag.meta"
+      ]
+    },
+    {
+      "aid": "AID.EMBED.TEXT.v1",
+      "name": "embed_text",
+      "deterministic": false,
+      "side_effects": [
+        "proc_exec"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Embeds a text string into a float vector using a provider (hash by default, optional external cmd)."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "dim": {
+            "type": "integer"
+          },
+          "normalize": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "provider",
+          "dim",
+          "embedding"
+        ],
+        "properties": {
+          "provider": {
+            "type": "string"
+          },
+          "dim": {
+            "type": "integer"
+          },
+          "warn": {
+            "type": "string"
+          },
+          "embedding": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.embed",
+        "tag.meta"
+      ]
+    },
+    {
+      "aid": "AID.VECDB.UPSERT.v1",
+      "name": "vectordb_upsert",
+      "deterministic": false,
+      "side_effects": [
+        "filesystem_write",
+        "proc_exec"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Appends a normalized embedding + metadata to work/vectordb/<stream>/ (embeddings.f32, meta.jsonl)."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "stream",
+          "text"
+        ],
+        "properties": {
+          "stream": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "meta": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "ok",
+          "stream"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "stream": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.vectordb",
+        "tag.memory",
+        "tag.fs"
+      ]
+    },
+    {
+      "aid": "AID.VECDB.QUERY.v1",
+      "name": "vectordb_query",
+      "deterministic": false,
+      "side_effects": [
+        "filesystem_read",
+        "proc_exec"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Cosine-similarity query over embeddings.f32; returns top_k hits with score and meta line."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "stream",
+          "query"
+        ],
+        "properties": {
+          "stream": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "top_k": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "ok",
+          "hits"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "warn": {
+            "type": "string"
+          },
+          "hits": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "i",
+                "score"
+              ],
+              "properties": {
+                "i": {
+                  "type": "integer"
+                },
+                "score": {
+                  "type": "number"
+                },
+                "meta_line": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.vectordb",
+        "tag.memory",
+        "tag.fs"
+      ]
+    },
+    {
+      "aid": "AID.GENESIS.WRITE_FILE.v1",
+      "name": "genesis_write_file",
+      "deterministic": false,
+      "side_effects": [
+        "filesystem_write"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Writes a source file into toolpacks/runtime_genesis/src (sandboxed)."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "relative_path",
+          "content"
+        ],
+        "properties": {
+          "relative_path": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "overwrite": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "written": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.meta",
+        "tag.genesis"
+      ]
+    },
+    {
+      "aid": "AID.GENESIS.COMPILE_SHARED.v1",
+      "name": "genesis_compile_shared",
+      "deterministic": false,
+      "side_effects": [
+        "process_spawn",
+        "filesystem_write"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Compiles a C++ source into a .so placed in toolpacks/runtime_plugins."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "src_relative_path",
+          "out_name"
+        ],
+        "properties": {
+          "src_relative_path": {
+            "type": "string"
+          },
+          "out_name": {
+            "type": "string"
+          },
+          "cxx": {
+            "type": "string"
+          },
+          "extra_flags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "shared": {
+            "type": "string"
+          },
+          "rc": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.meta",
+        "tag.genesis"
+      ]
+    },
+    {
+      "aid": "AID.GENESIS.LOAD_PLUGIN.v1",
+      "name": "genesis_load_plugin",
+      "deterministic": false,
+      "side_effects": [
+        "dynamic_library_load"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Loads a .so plugin from toolpacks/runtime_plugins and registers its tools into the current process."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "properties": {
+          "plugin_relative_path": {
+            "type": "string"
+          },
+          "out_name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "loaded": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.meta",
+        "tag.genesis"
+      ]
+    },
+    {
+      "aid": "AID.QUEUE.ENQUEUE.v1",
+      "name": "queue_enqueue",
+      "deterministic": false,
+      "side_effects": [
+        "filesystem_write"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Writes a run_request JSON into <queue_dir>/inbox for autopilot."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "properties": {
+          "request_json": {
+            "type": "object"
+          },
+          "request_str": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "queue_dir": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "queue_dir": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.meta",
+        "tag.queue"
+      ]
+    },
+    {
+      "aid": "AID.NOOP.v1",
+      "name": "noop",
+      "deterministic": true,
+      "side_effects": [
+        "none"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound"
+      },
+      "inputs_schema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.meta"
+      ]
+    },
+    {
+      "aid": "AID.RUN.LOG.SUMMARY.v1",
+      "name": "run_log_summary",
+      "deterministic": true,
+      "side_effects": [
+        "filesystem_read"
+      ],
+      "replay_inputs": [
+        "path_fingerprint"
+      ],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Summarizes a Machina run JSONL log (event counts, tool timing, chain link check)."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "max_lines": {
+            "type": "integer"
+          },
+          "max_bytes": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "ok",
+          "path",
+          "resolved",
+          "run_id",
+          "spec_version",
+          "first_ts",
+          "last_ts",
+          "lines",
+          "bytes",
+          "chain_links_ok",
+          "chain_link_errors",
+          "events",
+          "tools"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "path": {
+            "type": "string"
+          },
+          "resolved": {
+            "type": "string"
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "spec_version": {
+            "type": "string"
+          },
+          "first_ts": {
+            "type": "string"
+          },
+          "last_ts": {
+            "type": "string"
+          },
+          "lines": {
+            "type": "integer"
+          },
+          "bytes": {
+            "type": "integer"
+          },
+          "chain_links_ok": {
+            "type": "boolean"
+          },
+          "chain_link_errors": {
+            "type": "integer"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "event",
+                "count"
+              ],
+              "properties": {
+                "event": {
+                  "type": "string"
+                },
+                "count": {
+                  "type": "integer"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "aid",
+                "ok",
+                "error",
+                "total_ms",
+                "max_ms"
+              ],
+              "properties": {
+                "aid": {
+                  "type": "string"
+                },
+                "ok": {
+                  "type": "integer"
+                },
+                "error": {
+                  "type": "integer"
+                },
+                "total_ms": {
+                  "type": "integer"
+                },
+                "max_ms": {
+                  "type": "integer"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "tags": [
+        "tag.meta",
+        "tag.fs",
+        "tag.debug"
+      ]
+    },
+    {
+      "aid": "AID.DEMO.MISSING_TOOL.v1",
+      "name": "demo_missing_tool",
+      "deterministic": true,
+      "side_effects": [
+        "none"
+      ],
+      "replay_inputs": [],
+      "estimate_model": {
+        "mode": "ConservativeBound",
+        "notes": "Intentionally missing implementation to demo Genesis auto-trigger/autostub."
+      },
+      "inputs_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "outputs_schema": {
+        "type": "object",
+        "required": [
+          "ok",
+          "autostub"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "autostub": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "tags": [
+        "tag.demo",
+        "tag.meta",
+        "tag.missing"
+      ]
+    }
+  ]
+}

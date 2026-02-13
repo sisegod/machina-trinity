@@ -1,0 +1,24 @@
+{
+  "goalpack_id": "goalpack.gpu_smoke",
+  "goalpack_version": "1.0.0",
+  "trust_tier": "goal_tier0_builtin",
+  "goals": [
+    {
+      "goal_id": "goal.GPU_SMOKE.v1",
+      "dsl_schema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "candidate_tags": [
+        "tag.meta",
+        "tag.gpu"
+      ],
+      "default_budget_profile": "budget.profileA.default",
+      "required_tools": [
+        "AID.GPU_SMOKE.v1",
+        "AID.NOOP.v1"
+      ],
+      "completion_slots": [0]
+    }
+  ]
+}

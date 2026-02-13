@@ -1,0 +1,36 @@
+# Build
+build/
+*.o
+*.so
+*.dll
+*.dylib
+
+# Runtime data
+work/
+logs/
+github_ready/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Environment (may contain secrets)
+machina_env.sh
+.env
+.env.*
+.secrets.env
+todo.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

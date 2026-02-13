@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GoalPack Manifest",
+  "type": "object",
+  "required": [
+    "goalpack_id",
+    "goalpack_version",
+    "trust_tier",
+    "goals"
+  ],
+  "properties": {
+    "goalpack_id": {
+      "type": "string",
+      "pattern": "^goalpack\\.[a-z0-9_\\-\\.]+$"
+    },
+    "goalpack_version": {
+      "type": "string"
+    },
+    "trust_tier": {
+      "type": "string",
+      "enum": [
+        "goal_tier0_builtin",
+        "goal_tier1_signed",
+        "goal_tier2_untrusted"
+      ]
+    },
+    "goals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "goal_id",
+          "dsl_schema",
+          "candidate_tags",
+          "default_budget_profile",
+          "required_tools"
+        ],
+        "properties": {
+          "goal_id": {
+            "type": "string",
+            "pattern": "^goal\\.[A-Z0-9_\\-\\.]+\\.v\\d+$"
+          },
+          "dsl_schema": {
+            "type": "object"
+          },
+          "candidate_tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "default_budget_profile": {
+            "type": "string"
+          },
+          "required_tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "completion_slots": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 7
+            }
+          },
+          "any_slot_sufficient": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

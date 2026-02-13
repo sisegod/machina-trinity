@@ -1,0 +1,24 @@
+{
+  "goalpack_id": "goalpack.demo_missing_tool",
+  "goalpack_version": "1.0.0",
+  "trust_tier": "goal_tier0_builtin",
+  "goals": [
+    {
+      "goal_id": "goal.DEMO.MISSING_TOOL.v1",
+      "dsl_schema": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "candidate_tags": [
+        "tag.demo",
+        "tag.meta",
+        "tag.missing"
+      ],
+      "default_budget_profile": "budget.profileA.default",
+      "required_tools": [
+        "AID.DEMO.MISSING_TOOL.v1"
+      ],
+      "completion_slots": [0]
+    }
+  ]
+}

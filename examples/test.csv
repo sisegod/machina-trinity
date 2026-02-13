@@ -1,0 +1,5 @@
+id,msg
+1,INFO ok
+2,CRITICAL ERROR found
+3,INFO ok
+4,ERROR timeout

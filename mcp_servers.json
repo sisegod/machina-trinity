@@ -1,0 +1,33 @@
+{
+  "servers": {
+    "n8n": {
+      "transport": "streamable_http",
+      "url": "https://api.n8n-mcp.com/mcp",
+      "disabled": true,
+      "_note": "API key required. Set headers.Authorization when you have one."
+    },
+    "web_search": {
+      "transport": "streamable_http",
+      "url": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+      "headers": {
+        "Authorization": "Bearer ${Z_AI_API_KEY}"
+      }
+    },
+    "web_reader": {
+      "transport": "streamable_http",
+      "url": "https://api.z.ai/api/mcp/web_reader/mcp",
+      "headers": {
+        "Authorization": "Bearer ${Z_AI_API_KEY}"
+      }
+    },
+    "zai": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@z_ai/mcp-server"],
+      "env": {
+        "Z_AI_API_KEY": "${Z_AI_API_KEY}",
+        "Z_AI_MODE": "ZAI"
+      }
+    }
+  }
+}

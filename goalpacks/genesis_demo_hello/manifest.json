@@ -1,0 +1,22 @@
+{
+  "goalpack_id": "goalpack.genesis_demo_hello",
+  "goalpack_version": "1.0.0",
+  "trust_tier": "goal_tier0_builtin",
+  "goals": [
+    {
+      "goal_id": "goal.GENESIS_DEMO_HELLO.v1",
+      "dsl_schema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "candidate_tags": [],
+      "default_budget_profile": "budget.profileA.default",
+      "required_tools": [
+        "AID.GENESIS.WRITE_FILE.v1",
+        "AID.GENESIS.COMPILE_SHARED.v1",
+        "AID.GENESIS.LOAD_PLUGIN.v1"
+      ],
+      "completion_slots": [0]
+    }
+  ]
+}

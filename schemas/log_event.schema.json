@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Machina Log Event (JSONL)",
+  "type": "object",
+  "required": [
+    "ts",
+    "spec_version",
+    "profile_id",
+    "run_id",
+    "step",
+    "event",
+    "payload"
+  ],
+  "properties": {
+    "ts": {
+      "type": "string"
+    },
+    "spec_version": {
+      "type": "string"
+    },
+    "profile_id": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "step": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "event": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}
