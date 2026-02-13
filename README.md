@@ -234,11 +234,11 @@ The result: the system is *monotonically improving*. It either gets better or st
 ### Build (30 seconds)
 
 ```bash
-# Prerequisites: build-essential, cmake 3.21+, libjson-c-dev
 git clone https://github.com/sisegod/machina-trinity.git
 cd machina-trinity
 
-pip install -r requirements.txt
+./scripts/install_deps.sh
+# manual alternative: see docs/DEPENDENCIES.md
 
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(nproc)          # Linux
@@ -586,6 +586,7 @@ machina-trinity/
 | **[Policy Driver](docs/POLICY_DRIVER.md)** | LLM integration protocol, driver authoring guide |
 | **[LLM Backends](docs/LLM_BACKENDS.md)** | Ollama, llama.cpp, Claude, OpenAI setup |
 | **[Quick Start](docs/QUICKSTART.md)** | 10-minute build → configure → run guide |
+| **[Dependencies](docs/DEPENDENCIES.md)** | Required C++/Python/system packages per OS |
 | **[Language Strategy](docs/LANGUAGE_STRATEGY_EN.md)** | Locale policy, Telegram language status, multilingual rollout plan |
 
 ---

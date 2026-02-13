@@ -23,7 +23,7 @@ Typical run time is about 2 minutes.
 ## Prerequisites
 
 - Python 3.10+
-- CMake 3.16+ and a C++20 compiler (`g++-11` or `clang-14`)
+- CMake 3.21+ and a C++20 compiler (`g++-11` or `clang-14`)
 - Ollama (local LLM) or Anthropic API key (Claude)
 - Telegram bot token (from @BotFather)
 
@@ -32,7 +32,8 @@ Typical run time is about 2 minutes.
 ```bash
 git clone <repo-url> machina_trinity_legend
 cd machina_trinity_legend
-pip install -r requirements.txt
+./scripts/install_deps.sh
+# manual alternative: see docs/DEPENDENCIES.md
 ./scripts/build_fast.sh
 cd build && ctest --output-on-failure
 ```

@@ -62,10 +62,8 @@ Machina는 이를 다음 방식으로 줄입니다.
 ### 1) 빌드
 
 ```bash
-sudo apt-get update
-sudo apt-get install -y build-essential cmake pkg-config libjson-c-dev
-
-pip install -r requirements.txt
+./scripts/install_deps.sh
+# 수동 설치는 docs/DEPENDENCIES.md 참고
 
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(nproc)
@@ -117,6 +115,7 @@ tail -f /tmp/machina_bot.log
 ## 문서 맵
 
 - 빠른 시작: `docs/QUICKSTART.md`
+- 의존성: `docs/DEPENDENCIES.md`
 - 아키텍처: `docs/ARCHITECTURE.md`
 - 운영/보안: `docs/OPERATIONS.md`
 - 서버 API: `docs/SERVE_API.md`
