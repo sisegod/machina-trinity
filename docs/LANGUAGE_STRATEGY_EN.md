@@ -100,3 +100,14 @@ Document file naming keeps GitHub-friendly conventions:
   - `docs/i18n/ko/EQUIVALENT_DOCSET.md`
   - `docs/i18n/ja/EQUIVALENT_DOCSET.md`
   - `docs/i18n/zh-CN/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/zh-TW/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/es/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/pt-BR/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/fr/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/de/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/vi/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/id/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/th/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/ru/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/ar/EQUIVALENT_DOCSET.md`
+  - `docs/i18n/hi/EQUIVALENT_DOCSET.md`
