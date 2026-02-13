@@ -9,6 +9,8 @@
     "web_search": {
       "transport": "streamable_http",
       "url": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+      "disabled": true,
+      "_note": "Requires Z_AI_API_KEY. Enable after setting key.",
       "headers": {
         "Authorization": "Bearer ${Z_AI_API_KEY}"
       }
@@ -16,6 +18,8 @@
     "web_reader": {
       "transport": "streamable_http",
       "url": "https://api.z.ai/api/mcp/web_reader/mcp",
+      "disabled": true,
+      "_note": "Requires Z_AI_API_KEY. Enable after setting key.",
       "headers": {
         "Authorization": "Bearer ${Z_AI_API_KEY}"
       }
@@ -24,6 +28,8 @@
       "transport": "stdio",
       "command": "npx",
       "args": ["-y", "@z_ai/mcp-server"],
+      "disabled": true,
+      "_note": "Requires Z_AI_API_KEY. Enable after setting key.",
       "env": {
         "Z_AI_API_KEY": "${Z_AI_API_KEY}",
         "Z_AI_MODE": "ZAI"

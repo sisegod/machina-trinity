@@ -67,6 +67,7 @@ if _policies_dir not in _sys.path:
 from machina_tools import load_available_tools_and_goals
 
 from telegram import Update
+from telegram.error import InvalidToken, NetworkError
 from telegram.ext import (
     Application,
     CallbackQueryHandler,
@@ -567,8 +568,49 @@ def main():
             pass
     atexit.register(_graceful_shutdown)
 
-    logger.info("Bot polling started...")
-    app.run_polling(allowed_updates=Update.ALL_TYPES)
+    retry_delay_s = max(2, int(os.getenv("MACHINA_BOT_RETRY_DELAY_S", "5")))
+    retry_max_delay_s = max(
+        retry_delay_s, int(os.getenv("MACHINA_BOT_RETRY_MAX_DELAY_S", "30"))
+    )
+    max_retries = max(0, int(os.getenv("MACHINA_BOT_MAX_RETRIES", "0")))  # 0 = infinite
+    attempt = 0
+    while True:
+        try:
+            logger.info("Bot polling started...")
+            app.run_polling(allowed_updates=Update.ALL_TYPES, close_loop=False)
+            break  # graceful shutdown path
+        except InvalidToken:
+            logger.exception("Bot polling failed: invalid telegram token")
+            raise
+        except NetworkError as e:
+            attempt += 1
+            if max_retries and attempt >= max_retries:
+                logger.error(
+                    "Bot polling failed with NetworkError (%d/%d): %s",
+                    attempt, max_retries, e,
+                )
+                raise
+            logger.warning(
+                "Bot polling network error (attempt %d): %s; retrying in %ds",
+                attempt, e, retry_delay_s,
+            )
+            time.sleep(retry_delay_s)
+            retry_delay_s = min(retry_delay_s * 2, retry_max_delay_s)
+        except Exception as e:
+            # Keep process alive for transient runtime faults (event loop hiccups, DNS flaps, etc.)
+            attempt += 1
+            if max_retries and attempt >= max_retries:
+                logger.exception(
+                    "Bot polling failed with fatal error (%d/%d): %s",
+                    attempt, max_retries, e,
+                )
+                raise
+            logger.exception(
+                "Bot polling runtime error (attempt %d), retrying in %ds",
+                attempt, retry_delay_s,
+            )
+            time.sleep(retry_delay_s)
+            retry_delay_s = min(retry_delay_s * 2, retry_max_delay_s)
 
 
 if __name__ == "__main__":
